@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const DEST = process.env.MEMBERSHIP_EMAIL ?? "info@jazzcouncil.org.il";
 
 const declLabels = [
@@ -13,6 +11,7 @@ const declLabels = [
 ];
 
 export async function POST(req: NextRequest) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const body = await req.json();
   const { fullName, idNumber, phone, address, email, date, signature, decl1, decl2, decl3, decl4 } = body;
 
