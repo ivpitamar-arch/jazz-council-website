@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 </html>`;
 
   const { error } = await resend.emails.send({
-    from: "מועצת הג'אז <onboarding@resend.dev>",
+    from: "מועצת הג'אז <noreply@jazzcouncil.org.il>",
     to: DEST,
     subject: `בקשת הצטרפות חדשה – ${fullName}`,
     html,
