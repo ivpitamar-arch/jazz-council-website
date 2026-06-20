@@ -37,7 +37,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
           </span>
         )}
 
-        <h3 className="text-dark font-bold text-lg leading-tight mb-3 group-hover:text-accent transition-colors">
+        <h3 className="text-white font-bold text-xl leading-tight mb-3 group-hover:text-accent transition-colors">
           <Link href={`/articles/${article.slug}`}>{article.title}</Link>
         </h3>
 

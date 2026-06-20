@@ -43,8 +43,8 @@ export default function PageHero({
             animate="show"
           />
           <motion.h1
-            className={`text-4xl md:text-5xl font-bold leading-tight mb-4 ${
-              dark ? "text-white" : "text-dark"
+            className={`text-4xl md:text-5xl font-extrabold leading-tight mb-4 ${
+              dark ? "text-white drop-shadow-lg" : "text-white"
             }`}
             variants={fadeUp}
             initial="hidden"

@@ -39,11 +39,11 @@ export default async function ArticlePage(props: PageProps<"/articles/[slug]">) 
   return (
     <div className="bg-base min-h-screen">
       {/* Article hero */}
-      <div className="bg-primary py-20">
+      <div className="bg-gradient-to-b from-primary-dark to-primary py-20">
         <div className="max-w-3xl mx-auto px-6">
           <Link
             href="/articles"
-            className="inline-flex items-center gap-2 text-white/60 hover:text-accent text-sm mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-white/70 hover:text-accent text-sm mb-8 transition-colors"
           >
             → חזרה למאמרים
           </Link>
@@ -52,10 +52,10 @@ export default async function ArticlePage(props: PageProps<"/articles/[slug]">) 
               {article.category}
             </div>
           )}
-          <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4 drop-shadow-lg">
             {article.title}
           </h1>
-          <time className="text-white/50 text-sm">{formatDate(article.date)}</time>
+          <time className="text-white/60 text-sm">{formatDate(article.date)}</time>
         </div>
       </div>
 
@@ -73,7 +73,7 @@ export default async function ArticlePage(props: PageProps<"/articles/[slug]">) 
               return (
                 <h2
                   key={i}
-                  className="text-xl font-bold text-primary mt-8 mb-3"
+                  className="text-xl font-bold text-white mt-8 mb-3"
                 >
                   {paragraph.replace(/\*\*/g, "")}
                 </h2>
@@ -91,7 +91,7 @@ export default async function ArticlePage(props: PageProps<"/articles/[slug]">) 
         <div className="mt-16 pt-8 border-t border-border">
           <Link
             href="/articles"
-            className="inline-flex items-center gap-2 text-primary font-semibold hover:text-accent transition-colors"
+            className="inline-flex items-center gap-2 text-white font-semibold hover:text-accent transition-colors"
           >
             → חזרה לכל המאמרים
           </Link>

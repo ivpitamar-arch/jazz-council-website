@@ -7,8 +7,8 @@
   --color-accent-light: #a82235;
   --color-base:         #1a1515;
   --color-surface:      #201b1b;
-  --color-dark:         #ede8e3;
-  --color-muted:        #8a8078;
+  --color-dark:         #ffffff;
+  --color-muted:        #c8c0b8;
   --color-border:       #2d2525;
   --font-sans: var(--font-heebo);
 }
