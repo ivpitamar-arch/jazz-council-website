@@ -28,6 +28,53 @@ function formatDate(dateString: string): string {
   });
 }
 
+function renderInline(text: string) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={i} className="font-bold text-white">
+        {part.slice(2, -2)}
+      </strong>
+    ) : (
+      part
+    )
+  );
+}
+
+function renderContentBlock(block: string, key: number) {
+  const trimmed = block.trim();
+
+  if (trimmed === "---") {
+    return <hr key={key} className="my-8 border-border" />;
+  }
+
+  if (/^\*\*[^*]+\*\*$/.test(trimmed)) {
+    return (
+      <h2 key={key} className="text-xl font-bold text-white mt-8 mb-3">
+        {trimmed.slice(2, -2)}
+      </h2>
+    );
+  }
+
+  const lines = trimmed.split("\n");
+  if (lines.every((line) => line.trim().startsWith("- "))) {
+    return (
+      <ul key={key} className="list-disc pr-6 space-y-2">
+        {lines.map((line, i) => (
+          <li key={i} className="text-muted leading-relaxed">
+            {renderInline(line.trim().slice(2))}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  return (
+    <p key={key} className="text-muted leading-relaxed text-justify">
+      {renderInline(trimmed)}
+    </p>
+  );
+}
+
 export default async function ArticlePage(props: PageProps<"/articles/[slug]">) {
   const { slug } = await props.params;
   const article = getArticleBySlug(slug);
@@ -68,23 +115,9 @@ export default async function ArticlePage(props: PageProps<"/articles/[slug]">) 
 
         {/* Content */}
         <div className="prose prose-lg max-w-none text-dark leading-relaxed space-y-4">
-          {article.content.split("\n\n").map((paragraph, i) => {
-            if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
-              return (
-                <h2
-                  key={i}
-                  className="text-xl font-bold text-white mt-8 mb-3"
-                >
-                  {paragraph.replace(/\*\*/g, "")}
-                </h2>
-              );
-            }
-            return (
-              <p key={i} className="text-muted leading-relaxed text-justify">
-                {paragraph}
-              </p>
-            );
-          })}
+          {article.content
+            .split("\n\n")
+            .map((block, i) => renderContentBlock(block, i))}
         </div>
 
         {/* Back link */}

@@ -9,7 +9,6 @@ interface FormData {
   phone: string;
   address: string;
   email: string;
-  date: string;
   signature: string;
   decl1: boolean;
   decl2: boolean;
@@ -23,13 +22,19 @@ const initialForm: FormData = {
   phone: "",
   address: "",
   email: "",
-  date: "",
   signature: "",
   decl1: false,
   decl2: false,
   decl3: false,
   decl4: false,
 };
+
+function todayDDMMYYYY(): string {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  return `${day}/${month}/${now.getFullYear()}`;
+}
 
 const declarations = [
   'אני מצהיר/ה כי לא הורשעתי בעבירה שיש עמה קלון, וכי לא תלויים ועומדים נגדי הליכים פליליים בשל עבירות מסוג זה. (במידה וקיימת החרגה או מידע רלוונטי, יש לצרף נספח).',
@@ -219,10 +224,16 @@ export default function MembershipForm() {
       const res = await fetch("/api/membership", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, date: todayDDMMYYYY() }),
       });
       if (!res.ok) throw new Error("server error");
       setSubmitted(true);
+      const paymentUrl = process.env.NEXT_PUBLIC_MEMBERSHIP_PAYMENT_URL;
+      if (paymentUrl) {
+        setTimeout(() => {
+          window.location.href = paymentUrl;
+        }, 1800);
+      }
     } catch {
       setSubmitError(true);
     } finally {
@@ -244,7 +255,11 @@ export default function MembershipForm() {
           </svg>
         </div>
         <h3 className="text-dark font-bold text-xl mb-2">הטופס נשלח בהצלחה!</h3>
-        <p className="text-muted">תודה על פנייתכם. ניצור אתכם קשר בהקדם האפשרי.</p>
+        <p className="text-muted">
+          {process.env.NEXT_PUBLIC_MEMBERSHIP_PAYMENT_URL
+            ? "תודה על פנייתכם. מעבירים אתכם כעת לעמוד התשלום..."
+            : "תודה על פנייתכם. ניצור אתכם קשר בהקדם האפשרי."}
+        </p>
       </div>
     );
   }
@@ -461,37 +476,20 @@ export default function MembershipForm() {
           המוסמכים.
         </p>
 
-        {/* Date + Signature */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="date" className="block text-sm font-semibold text-dark mb-2">
-              תאריך
-            </label>
-            <input
-              id="date"
-              name="date"
-              type="text"
-              value={form.date}
-              onChange={handleChange}
-              className={inputClass}
-              dir="ltr"
-              placeholder="DD / MM / YYYY"
-            />
-          </div>
-          <div>
-            <label htmlFor="signature" className="block text-sm font-semibold text-dark mb-2">
-              חתימה
-            </label>
-            <input
-              id="signature"
-              name="signature"
-              type="text"
-              value={form.signature}
-              onChange={handleChange}
-              className={inputClass}
-              placeholder="שם מלא כחתימה"
-            />
-          </div>
+        {/* Signature */}
+        <div>
+          <label htmlFor="signature" className="block text-sm font-semibold text-dark mb-2">
+            חתימה
+          </label>
+          <input
+            id="signature"
+            name="signature"
+            type="text"
+            value={form.signature}
+            onChange={handleChange}
+            className={inputClass}
+            placeholder="שם מלא כחתימה"
+          />
         </div>
 
         <Button type="submit" variant="primary" size="lg" disabled={loading}>
