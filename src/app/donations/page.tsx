@@ -7,8 +7,7 @@ export const metadata: Metadata = {
   description: "הצטרפו כידידי הג'אז בישראל ותרמו לקידום הג'אז בישראל.",
 };
 
-// TODO: replace with real donation URL
-const DONATION_URL = "#";
+const DONATION_URL = process.env.NEXT_PUBLIC_DONATION_URL ?? "#";
 
 export default function DonationsPage() {
   return (
