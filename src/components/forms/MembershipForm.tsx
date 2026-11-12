@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 
 interface FormData {
@@ -210,6 +212,14 @@ export default function MembershipForm() {
   const [submitError, setSubmitError] = useState(false);
   const [showTaqanon, setShowTaqanon] = useState(false);
   const [taqanonRead, setTaqanonRead] = useState(false);
+  const router = useRouter();
+
+  // After a successful (free) sign-up, return the visitor to the home page.
+  useEffect(() => {
+    if (!submitted) return;
+    const t = setTimeout(() => router.push("/"), 5000);
+    return () => clearTimeout(t);
+  }, [submitted, router]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
@@ -248,8 +258,14 @@ export default function MembershipForm() {
             <polyline points="3,8 6.5,11.5 13,4" />
           </svg>
         </div>
-        <h3 className="text-dark font-bold text-xl mb-2">הטופס נשלח בהצלחה!</h3>
-        <p className="text-muted">תודה על פנייתכם. ניצור אתכם קשר בהקדם האפשרי.</p>
+        <h3 className="text-dark font-bold text-xl mb-2">תודה שהצטרפתם למועצת הג&apos;אז הישראלי!</h3>
+        <p className="text-muted mb-6">החברות שלכם נקלטה בהצלחה. בעוד רגע תועברו חזרה לאתר.</p>
+        <Link
+          href="/"
+          className="inline-block bg-accent text-dark font-bold px-6 py-3 hover:opacity-90 transition-opacity"
+        >
+          חזרה לאתר
+        </Link>
       </div>
     );
   }
