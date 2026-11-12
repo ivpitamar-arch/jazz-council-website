@@ -228,12 +228,6 @@ export default function MembershipForm() {
       });
       if (!res.ok) throw new Error("server error");
       setSubmitted(true);
-      const paymentUrl = process.env.NEXT_PUBLIC_MEMBERSHIP_PAYMENT_URL;
-      if (paymentUrl) {
-        setTimeout(() => {
-          window.location.href = paymentUrl;
-        }, 1800);
-      }
     } catch {
       setSubmitError(true);
     } finally {
@@ -255,11 +249,7 @@ export default function MembershipForm() {
           </svg>
         </div>
         <h3 className="text-dark font-bold text-xl mb-2">הטופס נשלח בהצלחה!</h3>
-        <p className="text-muted">
-          {process.env.NEXT_PUBLIC_MEMBERSHIP_PAYMENT_URL
-            ? "תודה על פנייתכם. מעבירים אתכם כעת לעמוד התשלום..."
-            : "תודה על פנייתכם. ניצור אתכם קשר בהקדם האפשרי."}
-        </p>
+        <p className="text-muted">תודה על פנייתכם. ניצור אתכם קשר בהקדם האפשרי.</p>
       </div>
     );
   }
